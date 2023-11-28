@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>> 問答迴圈應用-程式測試 </title>
+    <style>
+    
+    <!-- 因為編寫的當時沒有VisualStudio, 因此查了如何建立HTML檔案做編寫，雖然File類型不同，但HTML我可以直接已網頁執行，方便測試運行後效果 -->
+    <!-- 練習Script，頭、身、尾的架構 -->
+    <!-- 使用問答ㄉ題目，練習迴圈如何限縮答案、Function如何達到目的(?) -->
+    <!-- 定義歡迎頁面+問答葉面+結束頁面+分頁或分圖片分隔線 -->
+    
+        body {
+            font-family: Arial, sans-serif;
+        }
+        
+        #welcome-screen {
+            text-align: center;
+            
+        }
+
+        #quiz-container {
+            display: none;
+            text-align: left;
+            margin: 50px;
+        }
+        
+        #TEST-button {
+            float: right;
+            margin-right: 20px;
+        }
+        
+        hr {
+           margin: 20px 0;
+           width: 100%;
+           border: none;
+           border-top: 1px solid #000;            
+        }
+    </style>
+</head>
+<body>
+    <div id="welcome-screen">
+        <hr>
+        <h1>這是Amber的程式測試--問答迴圈 </h1>
+        <hr>
+        <img src="https://eng-eraser.github.io/Eraser_TEST01.jpg" alt="EXIT09.jpg" width="500"><br>
+        <br>
+        <label for="nickname"><br>-HELLO WORD- <br> 試寫HTML的Script，頭、身、尾的架構
+        <br>使用問答ㄉ題目，試迴圈如何限縮答案、Function如何達到目的(?)<br><br>請輸入測試者暱稱：</label>
+        <input type="text" id="nickname" />
+        <button onclick="startGame()"> SUBMIT </button>
+    </div>
+
+    <div id="quiz-container">
+        <div id="question"></div>
+        <label for="answer"><hr> </label>
+        <input type="text" id="answer" />
+        <button onclick="checkAnswer()"> 送出回答 </button>
+    </div>
+    <br><br><br><br>
+    <button id="TEST-button" onclick="changeBackgroundColor()"> <<介面測試按鈕>> </button>
+    
+    <script>
+    
+        function changeBackgroundColor() {
+            // 測試自己建立介面顯示:改背景
+            // 獲取需要ㄉ元素
+            const body = document.body;
+            // 利用以下Function跑出一個隨機色
+            const randomColor = getRandomColor();
+            // 將背景指定為隨機色
+            body.style.backgroundColor = randomColor;
+        
+        }
+
+        function getRandomColor() {
+            // 使用迴圈建立隨機的色號數值
+            const letters = "0123456789ABCDEF";
+            let color = "#";
+            for (let i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+        
+        let currentQuestion = 0;
+        const questions = [
+            { 
+              question: "<hr><img src='https://eng-eraser.github.io/Eraser_TEST01.jpg' width='600'><hr> ///測試內容簡述///<br>1.問答頁面:字體介面靠左，和主頁做區分 <br> 2.使用者可輸入回答，並與開發者已設定好的答案做Check <br> 3. ...<br> <<此處可輸入0000 or 0001 進入Next Page.>>", 
+              answers: ["0001", "0000"] 
+            },
+            { 
+                question: "<hr><img src='https://eng-eraser.github.io/Eraser_TEST01.jpg' width='600'><hr> 3.依據check的結果做出反應 (進入NEXT選項 or 跳出錯誤視窗，試輸入錯誤字詞可見錯誤視窗) <br> 4.此功能是使用迴圈，來達到限縮答案的目的。( 不確定其他作法是否更好以比較 )<br> 5.或許可利用資料庫搭配Function建立 更多多重答案供Check <br> 總結... <br>    << 此處可輸入0000 or 0002來進入Next Page.>>", 
+              answers: ["0002", "0000"] 
+            },
+            { 
+                question: "<hr><img src='https://eng-eraser.github.io/Eraser_TEST01.jpg' width='600'><hr> ///總結/// <br><br> I.本程式測試目的：建立一個使用者可輸入資訊，並由系統來Check 正確/錯誤，從而給出對應反饋。<br><br>II.熟悉語法控制一個頁面的實際情形 <br> (EX:了解到必須先對元素做定義、後續在Script建立Function才能連結使用...等等)<br><br> III.針對介面的架構、定義、使頁面隨操作更改還在學習中 <br>(EX: 右下介面測試按鈕，想做成使用者改變背景顏色用途(?) ) <br><br><<本業輸入0000 or 0003可完成測試.>> ", 
+              answers: ["0003", "0000"] 
+            
+            }
+        ];
+
+        function startGame() {
+            const welcomeScreen = document.getElementById("welcome-screen");
+            const quizContainer = document.getElementById("quiz-container");
+
+            const nickname = document.getElementById("nickname").value;
+            if (nickname.trim() === "") {
+                alert("請輸入測試者的暱稱");
+                return;
+            }
+            // 暱稱功能還不確定如何抓取、或是擷取再Output
+            welcomeScreen.style.display = "none";
+            quizContainer.style.display = "block";
+
+            showQuestion();
+        }
+
+        function showQuestion() {
+            const questionContainer = document.getElementById("question");
+            const answerInput = document.getElementById("answer");
+            
+            questionContainer.innerHTML = questions[currentQuestion].question;
+            answerInput.value = "";
+
+
+            // 問題
+        }
+
+        function checkAnswer() {
+            const answerInput = document.getElementById("answer");
+            const userAnswer = answerInput.value.trim().toLowerCase();
+
+            const correctAnswers = questions[currentQuestion].answers.map(answer => answer.toLowerCase());
+
+            if (correctAnswers.includes(userAnswer)) {
+                if (currentQuestion < questions.length - 1) {
+                    currentQuestion++;
+                    showQuestion();
+                } else {
+                    endSystem();
+                }
+            } else {
+                alert("<<抱歉>> 您輸入的回答不正確...因此無法查閱後續內容 : ( ");
+            }
+        }
+
+        function endSystem() {
+            const quizContainer = document.getElementById("quiz-container");
+            const thankYouMessage = document.createElement("h2");
+            thankYouMessage.textContent = "感謝您~問答已全數結束~ ((重整網頁以回到首頁)) ";
+            quizContainer.innerHTML = "";
+            quizContainer.appendChild(thankYouMessage);            
+        }
+       
+    </script>
+</body>
+</html>
