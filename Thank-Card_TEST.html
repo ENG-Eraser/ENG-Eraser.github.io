@@ -1,0 +1,166 @@
+
+
+//01102930_Amber_TEST//
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>> ~這是文馨的電子感謝卡~ </title>
+    <style>
+    
+    <!-- 練習Script，頭、身、尾的架構 -->
+    <!-- 使用問答ㄉ題目，練習迴圈如何限縮答案、Function如何達到目的(?) -->
+    <!-- 定義歡迎頁面+問答葉面+結束頁面+分頁或分圖片分隔線 -->
+    
+        body {
+            font-family: Arial, sans-serif;
+        }
+        
+        #welcome-screen {
+            text-align: center;
+            
+        }
+
+        #quiz-container {
+            display: none;
+            text-align: left;
+            margin: 50px;
+        }
+        
+        #TEST-button {
+            float: right;
+            margin-right: 20px;
+        }
+        
+        hr {
+           margin: 20px 0;
+           width: 100%;
+           border: none;
+           border-top: 1px solid #000;            
+        }
+    </style>
+</head>
+<body>
+    <div id="welcome-screen">
+        <hr>
+        <h1>~HELLO 這是Amber的電子感謝卡~<br> </h1>
+        <hr>
+        <!--測試插入圖片及調整版面-->
+        <img src="https://eng-eraser.github.io/THX00.jpg" alt="00.jpg" width="500"><br>
+        <br>
+        <label for="nickname">如果您收到這張卡片的連結or檔案，代表...您是文馨在公司想感謝的人!<br><br>~除了只放一張照片的賀卡，我希望用更多照片與您分享，今年在公司的生活點滴~<br>
+        <hr>請輸入您的暱稱，以繼續查看卡片：</label>
+        <input type="text" id="nickname" />
+        <button onclick="startSystem()"> SUBMIT </button>
+    </div>
+
+    <div id="quiz-container">
+        <div id="question"></div>
+        <label for="answer"><hr> </label>
+        <input type="text" id="answer" />
+        <button onclick="checkAnswer()"> SUBMIT </button>
+    </div>
+    <br><br><br><br>
+    <button id="TEST-button" onclick="changeBackgroundColor()"> <<魔幻舞台按鈕>> </button>
+    
+    <script>
+    
+        function changeBackgroundColor() {
+            // 測試自己建立介面顯示:改背景
+            // 獲取需要ㄉ元素
+            const body = document.body;
+            // 利用以下Function跑出一個隨機色
+            const randomColor = getRandomColor();
+            // 將背景指定為隨機色
+            body.style.backgroundColor = randomColor;
+        
+        }
+
+        function getRandomColor() {
+            // 使用迴圈建立隨機的色號數值
+            const letters = "0123456789ABCDEF";
+            let color = "#";
+            for (let i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+        
+        let currentQuestion = 0;
+        const questions = [
+            { 
+                question: "<hr><img src='https://eng-eraser.github.io/THX01.jpg' width='400'><hr>PHOTO01 : <<來到中鼎之後都不陌生的消防演練>><br><br>雖然...我每次都找不太到點名長<br><br>但後來就越來越熟悉啦!<br>(畢竟前前後後演練了超級多次: D)<hr><<輸入:[安全第一！] 進入Next Page.>>", 
+                answers: ["安全第一", "安全第一!", "安全第一！", "0000"] 
+            },
+            { 
+                question: "<hr><img src='https://eng-eraser.github.io/THX07.jpg' width='400'><hr>PHOTO02 : <<吃飯皇帝大>><br><br>我在公司最愛的時間是午餐時間<br><br>(應該無庸置疑吧@_@)<br><br>這是某天我自己在家作的便當飯糰!!(可愛的)<hr><<輸入:[午餐大師！] 進入Next Page.>>", 
+                answers: ["午餐大師", "午餐大師!", "午餐大師！", "0000"] 
+            },
+            { 
+                question: "<hr><img src='https://eng-eraser.github.io/THX06.jpg' width='400'><hr>PHOTO03 : <每月二手書借還&拍賣>><br><br>不知道看不看得出來...其實我是很愛看書的<br><br>前陣子看了AI市場、原子習慣和產業分析...等等的書<br><br>推薦給你，每個月中一起去10F挖寶~<hr><< 輸入:[滿腹詩書！] 進入Next Page.>> ", 
+                answers: ["滿腹詩書", "滿腹詩書!", "滿腹詩書！", "0000"]
+            },
+            {
+                question: "<hr><img src='https://eng-eraser.github.io/THX12.jpg' width='400'><hr>PHOTO04 : <<天色漸晚的窗外景色>><br><br>2023年要過去了，感謝您在公司的幫忙、照顧、協助、提拔<br>(其實傍晚時分從公司窗戶看出去很漂亮)<br><br>這其實是我最近學到的HTML<br><br>感謝您一起幫忙測試喔~<hr><< 輸入:[感謝有你！] 結束卡片.>> ",
+                answers: ["感謝有你", "感謝有你!", "感謝有你！", "0000"]
+            }
+        ];
+
+        function startSystem() {
+            const welcomeScreen = document.getElementById("welcome-screen");
+            const quizContainer = document.getElementById("quiz-container");
+
+            const nickname = document.getElementById("nickname").value;
+            if (nickname.trim() === "") {
+                alert("~請輸入OK，再點擊SUBMIT~");
+                return;
+            }
+            // 暱稱功能還不確定如何抓取、或是擷取再Output
+            welcomeScreen.style.display = "none";
+            quizContainer.style.display = "block";
+
+            showQuestion();
+        }
+
+        function showQuestion() {
+            const questionContainer = document.getElementById("question");
+            const answerInput = document.getElementById("answer");
+            
+            questionContainer.innerHTML = questions[currentQuestion].question;
+            answerInput.value = "";
+
+
+            // 問題
+        }
+
+        function checkAnswer() {
+            const answerInput = document.getElementById("answer");
+            const userAnswer = answerInput.value.trim().toLowerCase();
+
+            const correctAnswers = questions[currentQuestion].answers.map(answer => answer.toLowerCase());
+
+            if (correctAnswers.includes(userAnswer)) {
+                if (currentQuestion < questions.length - 1) {
+                    currentQuestion++;
+                    showQuestion();
+                } else {
+                    endSystem();
+                }
+            } else {
+                alert("<<抱歉>> 您輸入的回答不正確...因此無法查閱後續內容 : ( ");
+            }
+        }
+
+        function endSystem() {
+            const quizContainer = document.getElementById("quiz-container");
+            const thankYouMessage = document.createElement("h2");
+            thankYouMessage.textContent = "感謝您~卡片分享已全數結束~((重整網頁以回到首頁)) ";
+            quizContainer.innerHTML = "";
+            quizContainer.appendChild(thankYouMessage);            
+        }
+       
+    </script>
+</body>
+</html>
